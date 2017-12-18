@@ -1,0 +1,20 @@
+language: java
+env:
+  - PLAY_BRANCH=lab
+before_install:
+  - git clone --depth=1 -b ${PLAY_BRANCH} https://github.com/dmitrie/play.git play-${PLAY_BRANCH}
+  - cd play-${PLAY_BRANCH}/framework
+  - time ant
+  - cd ${TRAVIS_BUILD_DIR}
+install: play-${PLAY_BRANCH}/play dependencies --sync
+script: play-${PLAY_BRANCH}/play build-module
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: TJ5FliGjD2EJHwqQyXl7poyikE6QQlsLFPoEOeNfT5RKQyWjw+2SZN2jtoCdtV0yhNK+iaii02YJEpmGHpBU4tL6yhMXpkKpi7DpMb9Zmd+CRxHhZLR1nqWHQo+k/vU42cSc3LDBJSKLxOczq0zK6hQEDBKfnoLSkU1LQiuCrQA/QMYUSirtAAs025K4e+lrytVIppOLb46/HF0hW52cFlXhfcCRvCZnYhl/GANqw3Vx6IxKWe7F4yThojlzAtKdAUYkUtgxUeAyrzInQBpvne67gN+QFcFOCOQ9uzegL2zQF4WpPj+2neMokFRstYm+cndtWSL8m+iI6iOOOG/dKJH8UNiL19x1atuLdRmW0feDIP4vjs7xL5Bq4tUXUbDgqueZa7wfPf1l7vI8J83ygRVOnTxUcMLsAOGXok4MdDk3QT0BPbC1cpDRqh9bpav6KT5sgMgaeMwWmeFgpm4iON/Hwj/adK78LxVqo5FL3bfvWNhrR0A3scrtEba0lyMIPVCuzjlYS2jr1sHiIl+yIf7LW1wBs2QZ49sZ/k671G4qii68YCcpeOig+Xm4Pp/uCCKrFCsGD0SdCpRtI+5ji3xuFIOQ4BRmX2cR98okJksdPitzzMTaUx1k0OWn4DLSv86pNjr2NbGKGS3oztZvLhIZuqK6il6Zyl7X8qH06iU=
+  file_glob: true
+  file: dist/*.zip
+  on:
+    tags: true
+    repo: dmitrie/play-guice
